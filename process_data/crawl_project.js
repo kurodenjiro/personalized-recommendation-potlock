@@ -55,18 +55,20 @@ export const crawlData = async () => {
     const dataWrite = projects.filter(value => { return !!value }).map(obj => `${obj.accountId}::${obj.name}::${obj.category.join('|')}`).join('\n');
 
 
-    const SnapshotFilename = './data/project.dat';
-    fs.writeFileSync(SnapshotFilename, dataWrite);
+    // const SnapshotFilename = './data/project.dat';
+    // fs.writeFileSync(SnapshotFilename, dataWrite);
+
     //user
     // 1::F::1::10::48067
     // 2::M::56::16::70072
     // 3::M::25::15::55117
 
-    const res = await fetch('https://dev.potlock.io/api/v1/donors?format=json&limit=9999&offset=0');
-    const dataDonnor = await res.json();
-    const dataWritedonnor = dataDonnor.results.filter(value => { return !!value }).map((obj,index) => `${obj.id}::${obj.total_donations_out_usd}`).join('\n');
-    const SnapshotFilenameDonors = './data/donors.dat';
-    fs.writeFileSync(SnapshotFilenameDonors, dataWritedonnor);
+    // const res = await fetch('https://dev.potlock.io/api/v1/donors?format=json&limit=9999&offset=0');
+    // const dataDonnor = await res.json();
+    // const dataWritedonnor = dataDonnor.results.filter(value => { return !!value }).map((obj,index) => `${obj.id}::${obj.total_donations_out_usd}`).join('\n');
+    // const SnapshotFilenameDonors = './data/donors.dat';
+    // fs.writeFileSync(SnapshotFilenameDonors, dataWritedonnor);
+
     //donnor
     // 1::1193::5::978300760
     // 1::661::3::978302109
@@ -87,24 +89,20 @@ export const crawlData = async () => {
 
     FlatArray.forEach(item => {
         if (item?.donor) {
-            const key = `${item.donor}-${item.recipient}-${item.donated_at}`;
+            const key = `${item.donor}|${item.recipient}`;
             const amount = parseInt(item.total_amount)/1e24;
             totalAmountMap[key] = (totalAmountMap[key] || 0) + amount;
         }
 
     });
 
-
-
     const resultArray = Object.entries(totalAmountMap).map(([key, total_amount]) => {
-        const [donor, recipient, donated_at] = key.split('-');
-        const time_donate  =  new Date(donated_at).getTime();
-        return { donor, recipient, total_amount , time_donate};
+        const [donor, recipient] = key.split('|');
+        return { donor, recipient, total_amount };
     });
 
-    console.log(resultArray);
-    console.log(resultArray.length)
-    const dataWriteRate = resultArray.filter(value => { return !!value }).map((obj,index) => `${obj.recipient}::${obj.donor}::${obj.total_amount < 1 ? 1 : obj.total_amount > 1 ? 2 : obj.total_amount < 3 ? 3 : obj.total_amount > 3 ? 4  : obj.total_amount > 10 ? 5 : 0 }::${obj.time_donate}`).join('\n');
+    console.log(totalAmountMap);
+    const dataWriteRate = resultArray.filter(value => { return !!value }).map((obj,index) => `${obj.donor}::${obj.recipient}::${obj.total_amount < 1 ? 1 : obj.total_amount > 1 ? 2 : obj.total_amount < 3 ? 3 : obj.total_amount > 3 ? 4  : obj.total_amount > 10 ? 5 : 0 }`).join('\n');
     const SnapshotFilenameRate = './data/rate.dat';
     fs.writeFileSync(SnapshotFilenameRate, dataWriteRate);
 
