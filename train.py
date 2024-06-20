@@ -49,10 +49,10 @@ if __name__ == "__main__":
             metrics=["loss", "roc_auc", "precision", "recall", "ndcg"],
         ),
     )
-    # predict preference of user 2211 to item 110
-    print("prediction: ", lightgcn.predict(user=2211, item=110))
-    # recommend 7 items for user 2211
-    print("recommendation: ", lightgcn.recommend_user(user=2211, n_rec=7))
+    # predict preference of user 1 to item 2
+    print("prediction: ", lightgcn.predict(user=1, item=2))
+    # recommend 7 items for user 1
+    print("recommendation: ", lightgcn.recommend_user(user=1, n_rec=7))
 
     # cold-start prediction
     print(
@@ -62,5 +62,5 @@ if __name__ == "__main__":
     # cold-start recommendation
     print(
         "cold recommendation: ",
-        lightgcn.recommend_user(user="are we good?", n_rec=7, cold_start="popular"),
+        lightgcn.recommend_user(user="kurodenjiro.mear", n_rec=7, cold_start="popular"),
     )
