@@ -102,7 +102,7 @@ export const crawlData = async () => {
     });
 
     console.log(totalAmountMap);
-    const dataWriteRate = resultArray.filter(value => { return !!value }).map((obj,index) => `${obj.donor}::${obj.recipient}::${obj.total_amount < 1 ? 1 : obj.total_amount > 1 ? 2 : obj.total_amount < 3 ? 3 : obj.total_amount > 3 ? 4  : obj.total_amount > 10 ? 5 : 0 }`).join('\n');
+    const dataWriteRate = resultArray.filter(value => { return !!value }).map((obj,index) => `${obj.donor}::${obj.recipient}::${obj.total_amount}`).join('\n');
     const SnapshotFilenameRate = './data/rate.dat';
     fs.writeFileSync(SnapshotFilenameRate, dataWriteRate);
 
