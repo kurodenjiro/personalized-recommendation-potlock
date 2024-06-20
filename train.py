@@ -62,5 +62,5 @@ if __name__ == "__main__":
     # cold-start recommendation
     print(
         "cold recommendation: ",
-        lightgcn.recommend_user(user="kurodenjiro.mear", n_rec=7, cold_start="popular"),
+        lightgcn.recommend_user(user="kurodenjiro.near", n_rec=7, cold_start="popular"),
     )
